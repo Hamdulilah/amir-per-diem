@@ -211,7 +211,7 @@ tr[onclick]:hover{background:var(--maroon-soft)}
 <script>
 const APP_VERSION='1.0.2';
 const company='A';
-const DEFAULTS={before:2,after:.5,posBefore:1,posAfter:0,minHours:0,dayRate:438,nightRate:1095,reducedRate:876,fx:3.64};
+const DEFAULTS={fx:3.64};
 
 let current=null,depPos=false,arrPos=false;
 const E=id=>document.getElementById(id);
@@ -306,8 +306,8 @@ function togglePos(which){
 }
 function loadSettings(){
   const s=getSettings();
-  E('before').value=s.before;E('after').value=s.after;E('posBefore').value=s.posBefore;E('posAfter').value=s.posAfter;E('fx').value=s.fx;
-  E('aMin').value=s.minHours;E('dayRate').value=s.dayRate;E('nightRate').value=s.nightRate;E('reducedRate').value=s.reducedRate;
+  E('before').value=s.before??'';E('after').value=s.after??'';E('posBefore').value=s.posBefore??'';E('posAfter').value=s.posAfter??'';E('fx').value=s.fx??'';
+  E('aMin').value=s.minHours??'';E('dayRate').value=s.dayRate??'';E('nightRate').value=s.nightRate??'';E('reducedRate').value=s.reducedRate??'';
 }
 E('sector').addEventListener('input',e=>{e.target.value=e.target.value.toUpperCase()});
 function saveSettings(){
@@ -341,7 +341,10 @@ function calc(dep,arr,s){
 function calculate(){
   if(!E('dep').value||!E('arr').value)return alert('Enter departure and arrival.');
   const dep=new Date(E('dep').value),arr=new Date(E('arr').value);if(arr<=dep)return alert('Arrival must be after departure.');
-  const x=calc(dep,arr,getSettings());
+  const s=getSettings();
+  if([s.before,s.after,s.posBefore,s.posAfter,s.minHours,s.dayRate,s.nightRate,s.reducedRate].some(v=>v===undefined))
+    return alert('Please enter your rates in Settings and tap Save Settings first.');
+  const x=calc(dep,arr,s);
   current=normalizeTrip({id:Date.now(),sector:E('sector').value.trim().toUpperCase(),dep:E('dep').value,arr:E('arr').value,depPos,arrPos,...x});
   showResult(x);
 }
