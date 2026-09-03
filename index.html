@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#7b1037">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Amir PD">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">  
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">  
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="manifest" href="manifest.json">
+<title>Amir – Per Diem</title>
+<style>
+:root{
+  --maroon:#7b1037;
+  --maroon-dark:#5d0b29;
+  --maroon-soft:#f1e4e9;
+  --brass:#a8763f;
+  --brass-soft:#f4ead9;
+  --paper:rgba(255,253,251,.94);
+  --ink:#1c1417;
+  --muted:#83757b;
+  --line:#e9dde2;
+  --page:#f4f0f2;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%;overscroll-behavior:none}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+  margin:0;color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  background:
+    linear-gradient(rgba(247,243,245,.92),rgba(247,243,245,.97)),
+    radial-gradient(circle at 84% 14%,rgba(123,16,55,.11),transparent 34%),
+    radial-gradient(circle at 8% 92%,rgba(168,118,63,.08),transparent 30%),
+    var(--page);
+}
+body:before{
+  content:"";
+  position:fixed;z-index:-1;left:0;right:0;bottom:62px;height:34vh;
+  opacity:.16;background-repeat:no-repeat;background-position:center bottom;background-size:min(1100px,95vw) auto;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 300'%3E%3Cg fill='%237b1037'%3E%3Cpath d='M70 182c96-9 213-16 352-21l103-102h38l-55 99c117-2 241 0 392 8l145-55h34l-91 61c60 8 91 20 92 35-2 18-64 28-179 31l-132 1-112 48h-39l49-49-183-5-67 38h-33l31-41-139-7-74 20h-30l44-24-116-14c-38-6-66-14-81-23-12-8-11-14 2-20z'/%3E%3Cellipse cx='550' cy='213' rx='42' ry='13'/%3E%3Cellipse cx='745' cy='217' rx='42' ry='13'/%3E%3Cellipse cx='491' cy='219' rx='34' ry='11'/%3E%3Cellipse cx='805' cy='220' rx='34' ry='11'/%3E%3C/g%3E%3C/svg%3E");
+}
+.wrap{max-width:760px;margin:auto;padding:calc(18px + env(safe-area-inset-top)) 14px calc(96px + env(safe-area-inset-bottom))}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin:8px 2px 16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.brand h1{margin:0;font-size:29px;font-weight:750;letter-spacing:-.4px}
+.version{font-size:11px;color:var(--brass);border:1px solid rgba(168,118,63,.35);padding:4px 8px;border-radius:999px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.card{background:var(--paper);border:1px solid rgba(123,16,55,.08);border-radius:18px;padding:17px;margin:12px 0;box-shadow:0 6px 22px rgba(60,20,36,.05);backdrop-filter:blur(12px)}
+.hero{padding:24px 20px 20px;border-radius:22px}
+.heroTitle{font-size:23px;font-weight:750;margin-bottom:6px;letter-spacing:-.2px}
+.sub,.note{color:var(--muted);font-size:13.5px;line-height:1.5}
+label{display:block;color:var(--muted);font-size:12.5px;margin:12px 0 6px;font-weight:600;letter-spacing:.01em}
+input{width:100%;font-size:17px;padding:12px 13px;border:1px solid #ddd0d4;border-radius:12px;background:#fff;color:var(--ink);transition:border-color .15s ease}
+input:focus{outline:none;border-color:var(--maroon);box-shadow:0 0 0 3px rgba(123,16,55,.12)}
+button{width:100%;padding:14px;touch-action:manipulation;-webkit-appearance:none;border:0;border-radius:13px;background:var(--maroon);color:#fff;font-size:16px;font-weight:700;margin-top:12px;cursor:pointer;transition:background-color .15s ease,transform .1s ease}
+button:hover{background:var(--maroon-dark)}
+button:active{transform:scale(.98)}
+button.secondary{background:#efe6ea;color:var(--maroon-dark)}
+button:disabled{opacity:.4;cursor:not-allowed;transform:none}
+button:focus-visible,input:focus-visible,.tabs button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){button,.tab{transition:none;animation:none}}
+
+.tab{display:none}
+.tab.active{display:block;animation:tabIn .18s ease}
+@keyframes tabIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.tab.active{animation:none}}
+.hidden{display:none!important}
+.timeRow{display:grid;grid-template-columns:1fr 68px;gap:8px;align-items:end}
+.posBtn{width:auto;min-width:68px;height:47px;padding:0 10px;margin:0;background:#efe6ea;color:var(--maroon-dark);font-size:15px;font-weight:700}
+.posBtn.on{background:var(--maroon);color:white}
+.amount{font-size:38px;font-weight:800;margin-bottom:2px;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.amount .cur{font-size:14px;font-weight:700;color:var(--brass);letter-spacing:.05em;vertical-align:middle;margin-right:5px}
+.currency2{font-size:16px;color:var(--muted);margin-bottom:4px;font-variant-numeric:tabular-nums}
+.stub{position:relative;height:0;border-top:2px dashed var(--line);margin:16px -17px 14px}
+.stub:before,.stub:after{content:"";position:absolute;top:-9px;width:18px;height:18px;border-radius:50%;background:var(--page)}
+.stub:before{left:-9px}.stub:after{right:-9px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;font-size:14px}
+.row span{color:var(--muted)}
+.row strong{font-variant-numeric:tabular-nums}
+.tabs{position:fixed;z-index:20;bottom:0;left:0;right:0;padding-bottom:env(safe-area-inset-bottom);display:none;background:rgba(252,249,250,.96);border-top:1px solid #e5d9de;backdrop-filter:blur(18px);justify-content:center}
+.tabs button{max-width:250px;background:transparent;color:#8a7c81;margin:0;border-radius:0;font-size:12.5px;font-weight:600;padding:11px 5px 15px;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative}
+.tabs button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7}
+.tabs button.active{color:var(--maroon)}
+.tabs button.active:before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:22px;height:2.5px;border-radius:2px;background:var(--brass)}
+table{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:8px}
+th,td{padding:8px 3px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:700;font-size:10.5px;letter-spacing:.02em}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+tr[onclick]{cursor:pointer;transition:background-color .1s ease}
+tr[onclick]:hover{background:var(--maroon-soft)}
+.monthHead{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.monthTotal{text-align:right;font-weight:750;font-variant-numeric:tabular-nums}
+.modalBackdrop{position:fixed;z-index:99;inset:0;background:rgba(33,15,23,.55);display:none;align-items:center;justify-content:center;padding:20px}
+.modalBackdrop.show{display:flex}
+.modal{width:min(520px,100%);background:#fff;border-radius:20px;padding:22px;box-shadow:0 28px 80px rgba(0,0,0,.3)}
+.modal h2{margin:0 0 8px;color:var(--maroon-dark);font-size:20px}
+.checkRow{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;margin-top:16px}
+.checkRow input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--maroon)}
+.aviationMark{font-size:11.5px;color:var(--brass);margin-top:16px;text-align:center;letter-spacing:.03em}
+@media(max-width:530px){
+ table{font-size:10.5px}.wrap{padding-left:10px;padding-right:10px}
+ .brand h1{font-size:28px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section id="calculator" class="tab">
+  <div class="brand"><h1 id="calcTitle">Per Diem</h1><span class="version">v1.0.2</span></div>
+  <div class="sub">Personal estimate — not an official payroll calculation.</div>
+
+  <div class="card">
+    <label>Sector / Destination</label>
+    <input id="sector" placeholder="e.g. MCT" autocapitalize="characters" autocomplete="off" spellcheck="false">
+
+    <label>Scheduled Departure Time (Out)</label>
+    <div class="timeRow">
+      <input id="dep" type="datetime-local">
+      <button id="depPos" class="posBtn" onclick="togglePos('dep')">Pos</button>
+    </div>
+
+    <label>Actual Arrival Time (In)</label>
+    <div class="timeRow">
+      <input id="arr" type="datetime-local">
+      <button id="arrPos" class="posBtn" onclick="togglePos('arr')">Pos</button>
+    </div>
+
+    <div class="note">Tap Pos for a positioning leg with a commercial airline.</div>
+    <button onclick="calculate()">Calculate</button>
+  </div>
+
+  <div id="resultCard" class="card hidden">
+    <div id="primaryAmount" class="amount"></div>
+    <div id="secondaryAmount" class="currency2"></div>
+    <div class="stub"></div>
+    <div id="resultRows"></div>
+    <button onclick="saveTrip()">Save Trip</button>
+  </div>
+</section>
+
+<section id="monthly" class="tab">
+  <div class="brand"><h1>Monthly Overview</h1><span class="version">v1.0.2</span></div>
+  <div id="months"></div>
+</section>
+
+<section id="settings" class="tab">
+  <div class="brand"><h1>Settings</h1><span class="version">v1.0.2</span></div>
+
+  <div class="card">
+    <strong>Operating reporting times</strong>
+    <label>Hours before departure</label><input id="before" type="number" step=".25">
+    <label>Hours after arrival</label><input id="after" type="number" step=".25">
+  </div>
+
+  <div class="card">
+    <strong>Commercial Positioning reporting times</strong>
+    <label>Hours before departure</label><input id="posBefore" type="number" step=".25">
+    <label>Hours after arrival</label><input id="posAfter" type="number" step=".25">
+  </div>
+
+  <div id="aRates" class="card">
+    <strong id="aRatesTitle">Rules (QAR)</strong>
+    <label>Minimum trip duration (hours)</label><input id="aMin" type="number" step=".25">
+    <label>Day stop</label><input id="dayRate" type="number">
+    <label>Night stop — days 1–14</label><input id="nightRate" type="number">
+    <label>Night stop — day 15 onward</label><input id="reducedRate" type="number">
+  </div>
+
+  <div class="card">
+    <strong>Currency</strong>
+    <label>QAR per 1 USD</label><input id="fx" type="number" step=".01">
+    <button onclick="saveSettings()">Save Settings</button>
+  </div>
+
+  <div class="card">
+    <strong>Disclaimer</strong>
+    <p class="note">This app is a personal calculation tool. Figures are estimates and are not official. Always refer to your company payroll statement.</p>
+  </div>
+
+</section>
+</div>
+
+<nav id="tabs" class="tabs">
+  <button class="active" onclick="showTab('calculator',this)"><svg viewBox="0 0 24 24"><rect x="4" y="2.5" width="16" height="19" rx="2.5"/><line x1="7.5" y1="7" x2="16.5" y2="7"/><line x1="7.5" y1="11.5" x2="7.5" y2="11.5"/><line x1="12" y1="11.5" x2="12" y2="11.5"/><line x1="16.5" y1="11.5" x2="16.5" y2="11.5"/><line x1="7.5" y1="15.5" x2="7.5" y2="15.5"/><line x1="12" y1="15.5" x2="12" y2="15.5"/><line x1="16.5" y1="15.5" x2="16.5" y2="15.5"/><line x1="7.5" y1="19" x2="7.5" y2="19"/><line x1="12" y1="19" x2="12" y2="19"/><line x1="16.5" y1="19" x2="16.5" y2="19"/></svg>Calculator</button>
+  <button onclick="showTab('monthly',this)"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16.5" rx="2.5"/><line x1="3" y1="9.5" x2="21" y2="9.5"/><line x1="8" y1="2.5" x2="8" y2="6.5"/><line x1="16" y1="2.5" x2="16" y2="6.5"/></svg>Monthly</button>
+  <button onclick="showTab('settings',this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5c.1-.5.1-1 0-1.5l1.9-1.4-2-3.4-2.2.8c-.4-.3-.8-.6-1.3-.8l-.3-2.3H10.5l-.3 2.3c-.5.2-.9.5-1.3.8l-2.2-.8-2 3.4L6.6 12c-.1.5-.1 1 0 1.5l-1.9 1.4 2 3.4 2.2-.8c.4.3.8.6 1.3.8l.3 2.3h3l.3-2.3c.5-.2.9-.5 1.3-.8l2.2.8 2-3.4-1.9-1.4Z"/></svg>Settings</button>
+</nav>
+
+<div id="disclaimerBackdrop" class="modalBackdrop">
+  <div class="modal">
+    <h2>Disclaimer</h2>
+    <p class="note" style="font-size:15px;color:#4f4549">
+      This app is a personal calculation tool. Figures are estimates and are not official.
+      Always refer to your company payroll statement.
+    </p>
+    <div class="checkRow">
+      <input id="disclaimerCheck" type="checkbox" onchange="updateContinue()">
+      <label for="disclaimerCheck" style="margin:0;color:#30282b;font-size:15px;font-weight:600">
+        I have read and understood this disclaimer.
+      </label>
+    </div>
+    <button id="continueBtn" disabled onclick="acceptDisclaimer()">Continue</button>
+  </div>
+</div>
+
+<script>
+const APP_VERSION='1.0.2';
+const company='A';
+const DEFAULTS={before:2,after:.5,posBefore:1,posAfter:0,minHours:0,dayRate:438,nightRate:1095,reducedRate:876,fx:3.64};
+
+let current=null,depPos=false,arrPos=false;
+const E=id=>document.getElementById(id);
+const settingsKey=()=>`pdSettings_${company}`;
+const tripsKey=()=>`pdTrips_${company}`;
+
+function migrateSettings(comp){
+  const key=`pdSettings_${comp}`;
+  let raw=localStorage.getItem(key);
+  if(!raw)return;
+  try{
+    let s=JSON.parse(raw);
+    if(s.pb!==undefined&&s.posBefore===undefined)s.posBefore=s.pb;
+    if(s.pa!==undefined&&s.posAfter===undefined)s.posAfter=s.pa;
+    if(s.dr!==undefined&&s.dayRate===undefined)s.dayRate=s.dr;
+    if(s.nr!==undefined&&s.nightRate===undefined)s.nightRate=s.nr;
+    if(s.rr!==undefined&&s.reducedRate===undefined)s.reducedRate=s.rr;
+    if(s.flat!==undefined&&s.flatRate===undefined)s.flatRate=s.flat;
+    if(s.min!==undefined&&s.minHours===undefined)s.minHours=s.min;
+    if(typeof s.after==='number'&&s.after>4)s.after=s.after/60;
+    if(typeof s.posAfter==='number'&&s.posAfter>4)s.posAfter=s.posAfter/60;
+    if(s.posBefore===undefined)s.posBefore=0;
+    if(s.posAfter===undefined)s.posAfter=0;
+
+    // v1.0.1: pays the day-stop rate even for trips below 6 hours.
+    const migration101=`pdMigratedTo101_${comp}`;
+    if(!localStorage.getItem(migration101)){
+      if(s.minHours===undefined||s.minHours===6)s.minHours=0;
+      localStorage.setItem(migration101,'1');
+    }
+    // v1.0.2: positioning hours-before-departure default is 1, not 0.
+    const migration102=`pdMigratedTo102_${comp}`;
+    if(!localStorage.getItem(migration102)){
+      if(s.posBefore===undefined||s.posBefore===0)s.posBefore=1;
+      localStorage.setItem(migration102,'1');
+    }
+    localStorage.setItem(key,JSON.stringify(s));
+  }catch(e){}
+}
+function normalizeTrip(t){
+  let x={...t};
+  if(x.hours===undefined&&x.h!==undefined)x.hours=x.h;
+  if(x.h===undefined&&x.hours!==undefined)x.h=x.hours;
+  if(x.qar===undefined&&x.q!==undefined)x.qar=x.q;
+  if(x.q===undefined&&x.qar!==undefined)x.q=x.qar;
+  if(x.usd===undefined&&x.u!==undefined)x.usd=x.u;
+  if(x.u===undefined&&x.usd!==undefined)x.u=x.usd;
+  if(x.normal===undefined&&x.n!==undefined)x.normal=x.n;
+  if(x.reduced===undefined&&x.r!==undefined)x.reduced=x.r;
+  if(x.days===undefined&&x.d!==undefined)x.days=x.d;
+  x.hours=Number(x.hours??0);x.qar=Number(x.qar??0);x.usd=Number(x.usd??0);
+  return x;
+}
+function migrateTrips(comp){
+  const key=`pdTrips_${comp}`,raw=localStorage.getItem(key);if(!raw)return;
+  try{let t=JSON.parse(raw);if(Array.isArray(t))localStorage.setItem(key,JSON.stringify(t.map(normalizeTrip)))}catch(e){}
+}
+migrateSettings(company);migrateTrips(company);
+
+function getSettings(){return Object.assign({},DEFAULTS,JSON.parse(localStorage.getItem(settingsKey())||'null')||{})}
+function getTrips(){return (JSON.parse(localStorage.getItem(tripsKey())||'[]')||[]).map(normalizeTrip)}
+function setTrips(t){localStorage.setItem(tripsKey(),JSON.stringify(t.map(normalizeTrip)))}
+
+function boot(){
+  if(localStorage.getItem('pdDisclaimerAccepted')){enterApp();return}
+  E('disclaimerCheck').checked=false;
+  E('continueBtn').disabled=true;
+  E('disclaimerBackdrop').classList.add('show');
+}
+function updateContinue(){E('continueBtn').disabled=!E('disclaimerCheck').checked}
+function acceptDisclaimer(){
+  if(!E('disclaimerCheck').checked)return;
+  localStorage.setItem('pdDisclaimerAccepted','1');
+  E('disclaimerBackdrop').classList.remove('show');
+  enterApp();
+}
+function enterApp(){
+  E('tabs').style.display='flex';
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));E('calculator').classList.add('active');
+  document.querySelectorAll('.tabs button').forEach((x,i)=>x.classList.toggle('active',i===0));
+  loadSettings();
+}
+function showTab(id,b){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));E(id).classList.add('active');
+  document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+  if(id==='monthly')renderMonths();if(id==='settings')loadSettings();
+}
+function togglePos(which){
+  if(which==='dep'){depPos=!depPos;E('depPos').classList.toggle('on',depPos)}
+  else{arrPos=!arrPos;E('arrPos').classList.toggle('on',arrPos)}
+  current=null;E('resultCard').classList.add('hidden');
+}
+function loadSettings(){
+  const s=getSettings();
+  E('before').value=s.before;E('after').value=s.after;E('posBefore').value=s.posBefore;E('posAfter').value=s.posAfter;E('fx').value=s.fx;
+  E('aMin').value=s.minHours;E('dayRate').value=s.dayRate;E('nightRate').value=s.nightRate;E('reducedRate').value=s.reducedRate;
+}
+E('sector').addEventListener('input',e=>{e.target.value=e.target.value.toUpperCase()});
+function saveSettings(){
+  let s=getSettings();s.before=+E('before').value;s.after=+E('after').value;s.posBefore=+E('posBefore').value;s.posAfter=+E('posAfter').value;s.fx=+E('fx').value;
+  s.minHours=+E('aMin').value;s.dayRate=+E('dayRate').value;s.nightRate=+E('nightRate').value;s.reducedRate=+E('reducedRate').value;
+  localStorage.setItem(settingsKey(),JSON.stringify(s));alert('Settings saved');
+}
+function adjusted(dep,arr,s){
+  const beforeUsed=depPos?s.posBefore:s.before,afterUsed=arrPos?s.posAfter:s.after;
+  const start=new Date(dep.getTime()-beforeUsed*3600000),end=new Date(arr.getTime()+afterUsed*3600000);
+  return{start,end,hours:(end-start)/3600000,beforeUsed,afterUsed};
+}
+function calc(dep,arr,s){
+  const x=adjusted(dep,arr,s);if(x.hours<=0)throw Error('Arrival must be after departure.');
+  if(x.hours<s.minHours)return{...x,normal:0,reduced:0,days:0,qar:0,usd:0,noPay:`No per diem payable (trip duration below ${s.minHours} hours).`};
+  let rem=x.hours,normal=0,reduced=0,days=0;const full=Math.floor(rem/24);
+  for(let i=1;i<=full;i++)i>=15?reduced++:normal++;
+  rem-=full*24;
+  if(rem>.0001){
+    // Company A: a final partial day is paid as a full night stop when the
+    // actual arrival is after 02:00 and before 12:00, even if that last part
+    // is under 12 hours. A remainder over 12 hours is already a night stop.
+    const arrivalHour=arr.getHours()+arr.getMinutes()/60;
+    const earlyMorningFullNight=rem<12&&arrivalHour>2&&arrivalHour<12;
+    const night=rem>12||earlyMorningFullNight;
+    if(night)(full+1)>=15?reduced++:normal++;else days++;
+  }
+  const qar=normal*s.nightRate+reduced*s.reducedRate+days*s.dayRate;
+  return{...x,normal,reduced,days,qar,usd:qar/s.fx,noPay:''};
+}
+function calculate(){
+  if(!E('dep').value||!E('arr').value)return alert('Enter departure and arrival.');
+  const dep=new Date(E('dep').value),arr=new Date(E('arr').value);if(arr<=dep)return alert('Arrival must be after departure.');
+  const x=calc(dep,arr,getSettings());
+  current=normalizeTrip({id:Date.now(),sector:E('sector').value.trim().toUpperCase(),dep:E('dep').value,arr:E('arr').value,depPos,arrPos,...x});
+  showResult(x);
+}
+function row(a,b){return`<div class="row"><span>${a}</span><strong>${b}</strong></div>`}
+function showResult(x){
+  E('resultCard').classList.remove('hidden');let rows='';
+  E('primaryAmount').innerHTML='<span class="cur">QAR</span>'+Math.round(x.qar).toLocaleString();
+  E('secondaryAmount').textContent='≈ USD '+x.usd.toFixed(2);
+  rows+=row('Total hours away',x.hours.toFixed(2))+row('Night stops',x.normal)+row('Reduced nights',x.reduced)+row('Day stops',x.days);
+  if(x.noPay)rows+=`<p class="note"><strong>${x.noPay}</strong></p>`;E('resultRows').innerHTML=rows;
+}
+function overlaps(a,b){return new Date(a.dep)<new Date(b.arr)&&new Date(a.arr)>new Date(b.dep)}
+function saveTrip(){
+  if(!current)return;let t=getTrips();
+  if(t.some(x=>overlaps(current,x))){alert('This trip overlaps with an existing trip and cannot be saved.');return}
+  t.push(current);setTrips(t);
+  // Start the next entry clean while keeping the last departure/arrival times.
+  E('sector').value='';
+  depPos=false;arrPos=false;
+  E('depPos').classList.remove('on');E('arrPos').classList.remove('on');
+  current=null;E('resultCard').classList.add('hidden');alert('Trip saved');
+}
+function monthKeyFromArrival(s){const d=new Date(s);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
+function fmtDate(s){const d=new Date(s);return`${String(d.getDate()).padStart(2,'0')} ${d.toLocaleString('en',{month:'short'})} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`}
+function renderMonths(){
+  const root=E('months'),t=getTrips();root.innerHTML='';
+  if(!t.length){root.innerHTML='<div class="card">No saved trips yet.</div>';return}
+  const groups={};t.forEach(x=>(groups[monthKeyFromArrival(x.arr)]??=[]).push(x));
+  Object.keys(groups).sort().reverse().forEach(k=>{
+    const a=groups[k],qar=a.reduce((z,x)=>z+Number(x.qar||0),0),usd=a.reduce((z,x)=>z+Number(x.usd||0),0);
+    const name=new Date(k+'-01T12:00').toLocaleString('en',{month:'long',year:'numeric'}),div=document.createElement('div');div.className='card';
+    div.innerHTML=`<div class="monthHead"><strong>${name}</strong><div class="monthTotal">QAR ${qar.toFixed(2)}<br><span class="note">USD ${usd.toFixed(2)}</span></div></div>
+    <table><tr><th>Departure</th><th>Sector</th><th>Arrival</th><th class="num">Hours</th><th class="num">QAR</th><th class="num">USD</th></tr>
+    ${a.map(x=>`<tr onclick="deleteTrip(${x.id})"><td>${fmtDate(x.dep)}</td><td>${x.sector||'—'}</td><td>${fmtDate(x.arr)}</td><td class="num">${Number(x.hours||0).toFixed(2)}</td><td class="num">${Number(x.qar||0).toFixed(2)}</td><td class="num">${Number(x.usd||0).toFixed(2)}</td></tr>`).join('')}</table>
+    <div class="note">Tap a saved trip to delete it.</div>`;root.appendChild(div);
+  });
+}
+function deleteTrip(id){if(confirm('Delete this saved trip?')){setTrips(getTrips().filter(x=>x.id!==id));renderMonths()}}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',boot,{once:true})}else{boot()}
+</script>
+</body>
+</html>
